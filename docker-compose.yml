@@ -1,0 +1,34 @@
+version: '3.6'
+
+services:
+  #Backend API
+  ormae-api:
+    container_name: ormae-backend
+    build: .
+    command: npm start
+    working_dir: /usr/src/ormae-api
+    environment:
+      POSTGRES_USER: ormae
+      POSTGRES_PASSWORD: ormae
+      POSTGRES_DB: ormae
+      POSTGRES_HOST: postgres
+    links:
+      - postgres
+    ports:
+      - "3000:3000"
+    volumes:
+        - ./:/usr/src/facerecognition-api
+
+  #postgres
+  postgres:
+    environment:
+      POSTGRES_USER: ormae
+      POSTGRES_PASSWORD: ormae
+      POSTGRES_DB: ormae
+      POSTGRES_HOST: postgres
+    build: ./postgres
+    restart: always
+    # volumes:
+    #   - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5555:5555"
